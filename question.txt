@@ -1,0 +1,17 @@
+Coding challenge:
+URL Shortener
+
+The task:
+You are asked to create a URL shortening service.
+
+Functional requirements:
+Given a long url, returns a short code for it.
+Given a short url, returns the long url if it exists or not found.
+Non-functional requirements:
+Your application server as well as your data store should be run in separate Docker containers such that they can later on be scaled independently.
+
+Submission of results:
+Please provide the result as a Git repository with this content:
+The project with all source files.
+A docker-compose setup to run the backend.
+A short text document that lists the main steps of building your solution as well as all assumptions/decisions you made in case of unclear requirements or missing information

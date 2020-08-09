@@ -1,0 +1,83 @@
+Assumptions:
+
+Length of long URL:
+  - max: 2048 chars
+  - min: Approximately -> ftp://a.com ( 11 characters )
+
+Short URL
+  - Alpha-numeric (0-9,Aa-Zz)
+  - max (path): 9
+  - min (path): 6
+  - http://?.com/AaZz09
+  - will be random since there is no requirement
+    - this means i cannot derive the urls forward or backward
+
+Duplicates:
+  - Long URL provided twice will be evaluated to different short URL
+
+Transformation:
+  - Long <> Short do not need two way transformation
+  - Does not need to be cryptographically secure
+  - Use truncated uuid generation
+  - For clashes, regenerate random uuid
+
+URL:
+  - Not restricted on scheme or domain. i.e. ftp, mailto are all ok to use
+  - Needs to be a URL
+    - scheme/protocol
+    - domains
+    - path
+
+Scale:
+  - Not part of requirements, will have the single function managing with no load balancing
+
+Redundancy:
+  - Not part of requirements, will have the single data store with no failover
+
+Security:
+  - Unrestricted access to URLs
+
+Persistence:
+  - Data is non-relational and will likely have many more reads than writes.
+  - No requirements for URLs to "belong" to anyone, but will keep them separate anyway
+  - Default expiry of 1 week unless otherwise stated - to take advantage of autoexpiry
+  - Deleting - no requirements for deleting and will not provide functionality
+  - Will use DynamoDB
+  - If better performance read is required, consider redis level cache, probably using LRU
+  - If better performance write is required, consider pre-generated hash-strings to assign 
+
+Access limits:
+  - Not part of requirements, will have server just crash when limit is reached
+
+Data Exchange Format:
+  - JSON
+
+Logging/Monitoring:
+  - Will use function logs
+  - Will ignore repeated failures
+
+Data Model:
+  - key: uuid
+  - value: long_url
+
+Tech choices:
+  - Keep it simple, dockerized serverless on AWS, using AWS Gateway/Python and DynamoDB as data store
+
+Endpoints:
+[POST] /shorten
+Input: 
+  {"url": "http://the_long_url.com/"}
+Output:
+  data:
+    {"url": "http://test.com/the_short_url"}
+  status code:
+    201 - will always create a new short url
+
+[POST] /lengthen
+Input:
+  {"url": "http://test.com/the_short_url"}
+Output:
+  data: 
+    {"url": "http://the_long_url.com/"}
+  status code:
+    200 if found, else 404
