@@ -66,7 +66,8 @@ Output:
 
 `curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" -d '{"url": "http://someurl.com"}' "http://localhost:5000/create_short_url"`
 
-### replace "6fad2f" with
+replace "6fad2f" with the appropriate short url id you receive
+
 `curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" -d '{"url": "http://example.com/6fad2f"}' "http://localhost:5000/get_long_url"`
 
 
