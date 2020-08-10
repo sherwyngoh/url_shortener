@@ -6,7 +6,7 @@ Length of long URL:
 
 Short URL
   - Alpha-numeric (0-9,Aa-Zz)
-  - max (path): 9
+  - max (path): 6
   - min (path): 6
   - http://?.com/AaZz09
   - will be random since there is no requirement
@@ -59,25 +59,3 @@ Logging/Monitoring:
 Data Model:
   - key: uuid
   - value: long_url
-
-Tech choices:
-  - Keep it simple, dockerized serverless on AWS, using AWS Gateway/Python and DynamoDB as data store
-
-Endpoints:
-[POST] /shorten
-Input: 
-  {"url": "http://the_long_url.com/"}
-Output:
-  data:
-    {"url": "http://test.com/the_short_url"}
-  status code:
-    201 - will always create a new short url
-
-[POST] /lengthen
-Input:
-  {"url": "http://test.com/the_short_url"}
-Output:
-  data: 
-    {"url": "http://the_long_url.com/"}
-  status code:
-    200 if found, else 404

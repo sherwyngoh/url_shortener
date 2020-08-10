@@ -1,0 +1,14 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+    stdin_open: true  #for pdb tracing
+    tty: true #for pdb tracing
+  redis:
+    image: "redis:alpine"
